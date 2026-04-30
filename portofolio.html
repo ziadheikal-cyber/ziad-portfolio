@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziad A. Sebahy | Cloud & Comm Engineer</title>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        cyan: {
+                            glow: '#00f0ff',
+                        },
+                        gold: '#ffd700'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Cursor */
+        @media (pointer: fine) {
+            body { cursor: none; }
+            a, button { cursor: none; }
+        }
+        
+        body { background-color: #050505; color: #e4e4e7; overflow-x: hidden; }
+        
+        #cursor-dot {
+            position: fixed; width: 8px; height: 8px; background: #00f0ff; border-radius: 50%;
+            pointer-events: none; transform: translate(-50%, -50%); z-index: 9999;
+            transition: width 0.2s, height 0.2s;
+            display: none;
+        }
+        #cursor-outline {
+            position: fixed; width: 40px; height: 40px; border: 1px solid rgba(0, 240, 255, 0.5);
+            border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 9998;
+            transition: 0.1s ease-out;
+            display: none;
+        }
+
+        @media (pointer: fine) {
+            #cursor-dot, #cursor-outline { display: block; }
+        }
+
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Canvas Background */
+        #network-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.5; }
+
+        /* Neon Text & Borders */
+        .text-glow { text-shadow: 0 0 15px rgba(0,240,255,0.6); }
+        .border-glow { box-shadow: 0 0 15px rgba(0,240,255,0.4), inset 0 0 10px rgba(0,240,255,0.1); border: 1px solid #00f0ff; }
+        .border-glow:hover { box-shadow: 0 0 25px rgba(0,240,255,0.6), inset 0 0 15px rgba(0,240,255,0.2); }
+        
+        /* Grid Layout Magic */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(4, 1fr); }
+            .span-2 { grid-column: span 2; }
+            .span-3 { grid-column: span 3; }
+            .span-4 { grid-column: span 4; }
+            .row-span-2 { grid-row: span 2; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #00f0ff; border-radius: 3px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-glow selection:text-black">
+
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+    <canvas id="network-canvas"></canvas>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 space-y-8">
+        
+        <!-- Hero Section -->
+        <header class="glass-card rounded-3xl p-8 lg:p-12 relative overflow-hidden" data-aos="fade-down">
+            <!-- Decorative Elements -->
+            <div class="absolute -top-10 -right-10 opacity-5 pointer-events-none">
+                <i class="fas fa-satellite-dish text-[15rem] text-cyan-glow"></i>
+            </div>
+            <div class="absolute top-0 right-1/4 w-64 h-64 bg-cyan-glow/10 rounded-full blur-[100px] -z-10"></div>
+            
+            <div class="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-glow/5 border border-cyan-glow/20 text-cyan-glow text-xs font-semibold tracking-widest uppercase mb-6">
+                        <span class="w-2 h-2 rounded-full bg-cyan-glow animate-pulse"></span> Cloud & Comm Engineer
+                    </div>
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-4 tracking-tight leading-tight">
+                        Ziad A. <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-glow to-blue-500 text-glow">Sebahy</span>
+                    </h1>
+                    <h2 class="text-xl md:text-2xl text-gray-400 font-light mb-8">
+                        Communication Engineer <span class="text-cyan-glow mx-2">|</span> Cloud Computing
+                    </h2>
+                    
+                    <div class="flex flex-wrap gap-x-6 gap-y-3 text-sm md:text-base text-gray-300 mb-10">
+                        <span class="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5"><i class="fas fa-map-marker-alt text-cyan-glow"></i> Benha city, Egypt</span>
+                        <span class="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5"><i class="fas fa-phone text-cyan-glow"></i> +201064520012</span
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="file:///C:/Users/HP/OneDrive/Desktop/ziad_cv.pdf" class="px-8 py-4 bg-cyan-glow/10 text-cyan-glow font-semibold rounded-xl hover:bg-cyan-glow hover:text-black transition-all flex items-center gap-3 border-glow">
+                            <i class="fas fa-file-pdf"></i> Download CV
+                        </a>
+                        <a href="mailto:ziadheikal21@gmail.com" class="w-14 h-14 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-cyan-glow hover:border-cyan-glow/50 transition-colors">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ziad-heikal-150aa6311/" target="_blank" class="w-14 h-14 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-cyan-glow hover:border-cyan-glow/50 transition-colors">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="bento-grid">
+            
+            <!-- Objective -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-2 flex flex-col justify-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-cyan-glow/10 flex items-center justify-center border border-cyan-glow/20">
+                        <i class="fas fa-crosshairs text-xl text-cyan-glow"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Objective</h3>
+                </div>
+                <p class="text-gray-300 leading-relaxed text-lg font-light">
+                    Communications Engineering student (Expected 2026) with specialized training in <span class="text-cyan-glow">Cloud Computing (2024)</span> and <span class="text-cyan-glow">Data Engineering (2025)</span> from ITI. Built a cloud pipeline graduation project. Additionally familiar with cybersecurity fundamentals, PLC, and AI concepts. English C1. Seeking an entry-level role in cloud, data engineering, or network optimization.
+                </p>
+            </section>
+
+            <!-- Education -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-2" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
+                        <i class="fas fa-graduation-cap text-xl text-gold"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Education</h3>
+                </div>
+                <div class="bg-dark/40 p-6 rounded-2xl border border-white/5 hover:border-gold/30 transition-colors">
+                    <h4 class="text-xl font-bold text-white leading-tight mb-2">Bachelor of Communications Engineering</h4>
+                    <p class="text-gold font-medium mb-4">Higher Institute of Engineering and Technology</p>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-white/5 text-gray-300 text-sm">
+                        <i class="far fa-calendar-alt text-cyan-glow"></i> Expected Graduation: 2026
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-2 row-span-2 flex flex-col" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 rounded-full bg-cyan-glow/10 flex items-center justify-center border border-cyan-glow/20">
+                        <i class="fas fa-briefcase text-xl text-cyan-glow"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Experience</h3>
+                </div>
+                
+                <div class="relative pl-6 border-l border-cyan-glow/30 space-y-10 flex-1">
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-dark border-2 border-cyan-glow shadow-[0_0_10px_#00f0ff]"></div>
+                        <h4 class="text-xl font-bold text-white mb-1">Data Engineering Trainee</h4>
+                        <p class="text-sm font-medium text-cyan-glow mb-3"><i class="fas fa-building text-xs mr-1"></i> ITI • Summer 2025</p>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Completed intensive training in Data Engineering: data pipelines, ETL processes, and big data fundamentals. Built hands-on projects applying data processing workflows.
+                        </p>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-dark border-2 border-gray-500"></div>
+                        <h4 class="text-xl font-bold text-white mb-1">Cloud Computing Trainee</h4>
+                        <p class="text-sm font-medium text-gray-400 mb-3"><i class="fas fa-building text-xs mr-1"></i> ITI • Summer 2024</p>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Completed intensive training in Cloud Computing: cloud architecture, virtualization, IaaS/PaaS/SaaS models. Applied cloud infrastructure to real-world projects.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Skills -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-2" data-aos="fade-up" data-aos-delay="400">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
+                        <i class="fas fa-microchip text-xl text-gold"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Technical Skills</h3>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h5 class="text-xs font-bold text-cyan-glow uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fas fa-cloud"></i> Cloud & Data Engineering
+                        </h5>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">Cloud Computing</span>
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">Data Pipelines</span>
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">ETL</span>
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">Big Data</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="text-xs font-bold text-cyan-glow uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fas fa-broadcast-tower"></i> Telecommunications
+                        </h5>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">2G/3G/4G/5G</span>
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">Drive Test Techniques</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="text-xs font-bold text-cyan-glow uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fas fa-shield-alt"></i> Cyber & Programming
+                        </h5>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">Network Security</span>
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">Linux</span>
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">Python</span>
+                            <span class="px-3 py-1.5 bg-white/5 hover:bg-cyan-glow/10 border border-white/10 hover:border-cyan-glow/30 rounded-lg text-sm text-gray-300 transition-colors">ML Concepts</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Graduation Project -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-2 relative overflow-hidden group" data-aos="fade-up" data-aos-delay="500">
+                <div class="absolute -right-12 -bottom-12 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-500 pointer-events-none">
+                    <i class="fab fa-aws text-[10rem] text-cyan-glow"></i>
+                </div>
+                <div class="flex items-center gap-4 mb-6 relative z-10">
+                    <div class="w-12 h-12 rounded-full bg-cyan-glow/10 flex items-center justify-center border border-cyan-glow/50 text-glow">
+                        <i class="fas fa-rocket text-xl text-cyan-glow"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Graduation Project</h3>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-xl font-bold text-gold mb-3">DevOps Deployment on AWS</h4>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                        Designed and implemented a cloud-based data pipeline, applied data engineering principles (ETL, storage, processing), used cloud services for workflow automation.
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="text-xs font-semibold px-2 py-1 bg-white/10 rounded border border-white/5">AWS</span>
+                        <span class="text-xs font-semibold px-2 py-1 bg-white/10 rounded border border-white/5">DevOps</span>
+                        <span class="text-xs font-semibold px-2 py-1 bg-white/10 rounded border border-white/5">Pipelines</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Training -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
+                        <i class="fas fa-certificate text-xl text-gold"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Certifications & Training</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-dark/30 p-5 rounded-2xl border border-white/5 flex gap-4 hover:border-cyan-glow/30 transition-colors">
+                        <i class="fas fa-cloud text-2xl text-cyan-glow mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">ITI – Cloud Computing Track</h4>
+                            <p class="text-xs text-gray-500 mb-2">Summer 2024</p>
+                            <p class="text-sm text-gray-400">Cloud architecture, virtualization, IaaS/PaaS/SaaS.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/30 p-5 rounded-2xl border border-white/5 flex gap-4 hover:border-cyan-glow/30 transition-colors">
+                        <i class="fas fa-database text-2xl text-cyan-glow mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">ITI – Data Engineering Track</h4>
+                            <p class="text-xs text-gray-500 mb-2">Summer 2025</p>
+                            <p class="text-sm text-gray-400">Data pipelines, ETL, big data fundamentals.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/30 p-5 rounded-2xl border border-white/5 flex gap-4 hover:border-cyan-glow/30 transition-colors">
+                        <i class="fas fa-server text-2xl text-cyan-glow mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">DEPI – DevOps Track</h4>
+                            <p class="text-xs text-gray-500 mb-2">Digital Egypt Pioneers Initiative</p>
+                            <p class="text-sm text-gray-400">Linux fundamentals, cloud concepts.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark/30 p-5 rounded-2xl border border-white/5 flex gap-4 hover:border-cyan-glow/30 transition-colors">
+                        <i class="fas fa-shield-alt text-2xl text-cyan-glow mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Cybersecurity Fundamentals</h4>
+                            <p class="text-xs text-gray-500 mb-2">Online + University</p>
+                            <p class="text-sm text-gray-400">Network security basics, security concepts.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Languages -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-2" data-aos="fade-up" data-aos-delay="700">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-cyan-glow/10 flex items-center justify-center border border-cyan-glow/20">
+                        <i class="fas fa-globe text-xl text-cyan-glow"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Languages</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                        <span class="font-medium text-white">Arabic</span>
+                        <span class="text-xs px-3 py-1 bg-cyan-glow/20 text-cyan-glow rounded-full border border-cyan-glow/30">Native</span>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/5">
+                        <span class="font-medium text-white">English</span>
+                        <span class="text-xs px-3 py-1 bg-white/10 text-white rounded-full border border-white/10">Good (C1)</span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Software Tools -->
+            <section class="glass-card rounded-3xl p-8 span-4 lg:span-2" data-aos="fade-up" data-aos-delay="800">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
+                        <i class="fas fa-laptop-code text-xl text-gold"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Software</h3>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <span class="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-sm text-gray-300">
+                        <i class="fas fa-file-word text-blue-400"></i> MS Word
+                    </span>
+                    <span class="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-sm text-gray-300">
+                        <i class="fas fa-file-excel text-green-400"></i> MS Excel
+                    </span>
+                    <span class="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-sm text-gray-300">
+                        <i class="fas fa-file-powerpoint text-orange-400"></i> MS PowerPoint
+                    </span>
+                </div>
+            </section>
+
+        </div>
+        
+        <footer class="text-center py-8 text-gray-500 text-sm font-light mt-12 border-t border-white/5" data-aos="fade-in">
+            &copy; 2026 Ziad Sebahy. Designed for the Future of Networks.
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 50
+        });
+
+        // Custom Cursor Logic (Only visible on non-touch devices)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const dot = document.getElementById('cursor-dot');
+            const outline = document.getElementById('cursor-outline');
+
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                dot.style.left = `${posX}px`;
+                dot.style.top = `${posY}px`;
+
+                outline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 150, fill: "forwards" });
+            });
+
+            // Hover effects for links and buttons
+            document.querySelectorAll('a, button, .glass-card').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    if(el.tagName.toLowerCase() === 'a' || el.tagName.toLowerCase() === 'button') {
+                        dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                        outline.style.borderColor = '#ffd700';
+                        outline.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                    } else {
+                        outline.style.borderColor = 'rgba(0, 240, 255, 0.8)';
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    dot.style.transform = 'translate(-50%, -50%) scale(1)';
+                    outline.style.borderColor = 'rgba(0, 240, 255, 0.5)';
+                    outline.style.transform = 'translate(-50%, -50%) scale(1)';
+                });
+            });
+        }
+
+        // Canvas Network Background
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Adjust particle count based on screen size for performance
+        const particleCount = window.innerWidth < 768 ? 40 : 90;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 240, 255, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 240, 255, ${0.15 - dist/800})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
